@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from main_app.models import Game
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Game
+from .models import Game, Character
 from .forms import SessionForm
 # Create your views here.
 from django.http import HttpResponse
@@ -50,3 +50,31 @@ class GameUpdate(UpdateView):
 class GameDelete(DeleteView):
   model = Game
   success_url = '/games/'
+
+class CharacterList(ListView):
+  model = Character
+
+class CharacterDetail(DetailView):
+  model = Character
+
+class CharacterCreate(CreateView):
+  model = Character
+  fields = '__all__'
+
+class CharacterUpdate(UpdateView):
+  model = Character
+  fields = ['name']
+
+class CharacterDelete(DeleteView):
+  model = Character
+  success_url = '/characters/'
+
+def assoc_character(request, game_id, character_id):
+  game = Game.objects.get(id=game_id)
+  game.characters.add(character_id)
+  return redirect('detail', game_id=game_id)
+
+def unassoc_character(request, game_id, character_id):
+  game = Game.objects.get(id=game_id)
+  game.characters.remove(character_id)
+  return redirect('detail', game_id=game_id)

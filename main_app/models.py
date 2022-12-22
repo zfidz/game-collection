@@ -8,6 +8,16 @@ RATING_CHOICES = (
 )
 
 # Create your models here.
+
+class Character(models.Model):
+  name = models.CharField(max_length=25)
+
+  def __str__(self):
+    return self.name
+
+  def get_absolute_url(self):
+    return reverse('characters_detail', kwargs={'pk': self.id})
+
 class Game(models.Model):
   name = models.CharField(max_length=25)
   rating = models.CharField(max_length=25, choices=RATING_CHOICES, default='E')
@@ -24,7 +34,6 @@ class Game(models.Model):
 class Session(models.Model):
   length = models.CharField(max_length=20)
   date = models.DateField('Date Played')
-
   game=models.ForeignKey(Game, on_delete=models.CASCADE)
 
   def __str__(self):
