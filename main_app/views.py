@@ -15,8 +15,10 @@ def about(request):
 
 def games_details(request, game_id):
   game = Game.objects.get(id=game_id)
+  id_list = game.characters.all().values_list('id')
+  characters_game_doesnt_have = Character.objects.exclude(id__in=id_list)
   session_form = SessionForm()
-  return render(request, 'games/details.html', {'game': game, 'session_form' : session_form})
+  return render(request, 'games/details.html', {'game': game, 'session_form' : session_form, 'characters':characters_game_doesnt_have})
 
 def add_session(request, game_id):
     # create a ModelForm instance using the data in request.POST
@@ -40,7 +42,7 @@ class GameList(ListView):
 
 class GameCreate(CreateView):
   model = Game
-  fields = '__all__'
+  fields = 'name, rating, desciption, genre'
   success_url = '/games/'
 
 class GameUpdate(UpdateView):

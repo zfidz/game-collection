@@ -39,33 +39,60 @@ duration_string %} {% endcomment %}
         {% endfor %}
       </tbody>
     </table>
+  </div>
+</div>
 
-    <div class="row">
-      <div class="col s6">
-        <h3>{{ game.name }}'s Characters</h3>
-        {% if game.characters.count %} {% for character in game.characters.all
-        %}
+
+<hr>
+<div class="row">
+  <div class="col s6">
+    <h3>{{ game.name }}'s Characters</h3>
+    {% if game.characters.count %}
+      {% for character in game.characters.all %}
         <div class="card">
           <div class="card-content">
-            <span class="card-title"> {{ character.name }} </span>
+            <span class="card-title">
+              {{ character.name }}
+            </span>
           </div>
           <div class="card-action">
-            <form
-              action="{% url 'unassoc_character' game.id character.id %}"
-              method="POST"
-            >
+            <form action="{% url 'unassoc_character' game.id character.id %}" method="POST">
               {% csrf_token %}
               <button type="submit" class="btn">Remove</button>
             </form>
           </div>
         </div>
-        {% endfor %} {% else %}
-        <h5>No Characters :(</h5>
-        {% endif %}
-      </div>
-    </div>
+      {% endfor %}
+    {% else %}
+      <h5>No Characters</h5>
+    {% endif %}
   </div>
-</div>
+
+
+  <div class="col s6">
+    <h3>Available Characters</h3>
+    {% if characters.count %}
+      {% for character in characters.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+            {{ character.name }}
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'assoc_character' game.id character.id %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>{{game.name}} Already Has All Characters Available</h5>
+    {% endif %}
+  </div>
+
+
 <script>
   const dateEl = document.getElementById("id_date");
   M.Datepicker.init(dateEl, {

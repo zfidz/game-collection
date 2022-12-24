@@ -23,6 +23,7 @@ class Game(models.Model):
   rating = models.CharField(max_length=25, choices=RATING_CHOICES, default='E')
   genre = models.CharField(max_length=25)
   description = models.TextField(max_length=250)
+  characters = models.ManyToManyField(Character)
 
   def __str__(self):
     return f'{self.name} ({self.id})'  
@@ -35,6 +36,8 @@ class Session(models.Model):
   length = models.CharField(max_length=20)
   date = models.DateField('Date Played')
   game=models.ForeignKey(Game, on_delete=models.CASCADE)
+
+
 
   def __str__(self):
     return f"{self.length} on {self.date}"
