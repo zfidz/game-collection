@@ -128,3 +128,8 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+
+import django_on_heroku
+django_on_heroku.settings(locals())
