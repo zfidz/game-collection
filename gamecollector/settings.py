@@ -27,6 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+import environ
+
+environ.Env()
+environ.Env.read_env()
+
 
 # Application definition
 
@@ -77,7 +82,11 @@ WSGI_APPLICATION = 'gamecollector.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gamecollector',
+        'NAME': os.environ["DATABASE_NAME"],
+        'USER': os.environ["DATABASE_NAME"],
+        'PASSWORD': os.environ['DATABASE_PASSWORD'],
+        'HOST': os.environ['DATABASE_SERVER'],
+        'PORT': 5432
     }
 }
 
